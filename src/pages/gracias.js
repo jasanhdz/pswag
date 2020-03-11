@@ -10,7 +10,7 @@ export default function gracias() {
         <h2>Compra Exitosa</h2>
         <p>Espero que disfrutes tu swag, lucelo con orgullo</p>
         <p>¡Te esperamos de vuelta, no pares de aprender!</p>
-        <span role="img" arial-label="emjoin">
+        <span role="img" arial-label="emojin">
           ❤
         </span>
         <Link to="/">
