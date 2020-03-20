@@ -8,15 +8,13 @@ export default function Cart() {
   const [total, setTotal] = useState(0)
   const [stripe, setStripe] = useState()
 
-  console.log("aqui esta el config key: " + process.env.STRIPE_PK)
-
   const handleSubmit = async e => {
     e.preventDefault()
 
     const { error } = await stripe.redirectToCheckout({
       items: cart.map(({ sku, quantity }) => ({ sku, quantity })),
-      successUrl: process.env.SUCCESS_REDIRECT,
-      cancelUrl: process.env.CANCEL_REDIRECT,
+      successUrl: "http://localhost:8000/gracias",
+      cancelUrl: "http://localhost:8000/",
     })
 
     if (error) {
@@ -32,7 +30,9 @@ export default function Cart() {
 
   useEffect(() => {
     setStripe(
-      window.Stripe(process.env.STRIPE_PK, { betas: ["checkout_beta_4"] })
+      window.Stripe("pk_test_vsazMWidNDBnHnTKiMJ0dqEX00K9leAlqX", {
+        betas: ["checkout_beta_4"],
+      })
     )
     getTotal()
   }, [])
