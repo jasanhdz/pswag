@@ -2,7 +2,7 @@ import { Link } from "gatsby"
 import PropTypes from "prop-types"
 import React from "react"
 import { MenuItem, StyledHeader } from "../styles/components"
-const Header = ({ siteTitle }) => (
+const Header = () => (
   <StyledHeader>
     <Link to="/">
       <img
@@ -30,19 +30,6 @@ const Header = ({ siteTitle }) => (
         </MenuItem>
       </ul>
     </nav>
-    <div>
-      <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={{
-            color: `white`,
-            textDecoration: `none`,
-          }}
-        >
-          {siteTitle}
-        </Link>
-      </h1>
-    </div>
   </StyledHeader>
 )
 

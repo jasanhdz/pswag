@@ -1,3 +1,8 @@
+// require("dotenv").config({
+//   path: `.env.${process.env.NODE_ENV}`,
+// })
+require("dotenv").config()
+
 module.exports = {
   siteMetadata: {
     title: `Platzi swag`,
@@ -6,6 +11,7 @@ module.exports = {
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-stripe`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -25,6 +31,19 @@ module.exports = {
         theme_color: `#663399`,
         display: `minimal-ui`,
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+      },
+    },
+    {
+      resolve: `gatsby-plugin-typography`,
+      options: {
+        pathToConfigModule: "src/utils/typography",
+      },
+    },
+    {
+      resolve: `gatsby-source-stripe`,
+      options: {
+        objects: ["Sku"],
+        secretKey: process.env.STRIPE_SK,
       },
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality

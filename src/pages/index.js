@@ -1,10 +1,9 @@
 import React from "react"
-import { Link, graphql } from "gatsby"
-import { Jumbo } from "../components"
-import { SEO } from "../components"
+import { graphql } from "gatsby"
+import { Jumbo, SEO, Product } from "../components"
 
 export const query = graphql`
-  query GET_DESCRIPTION {
+  query GET_DATA {
     allSite {
       edges {
         node {
@@ -14,20 +13,49 @@ export const query = graphql`
         }
       }
     }
+    allStripeSku {
+      edges {
+        node {
+          id
+          price
+          product {
+            name
+            metadata {
+              img
+              description
+              wear
+            }
+          }
+        }
+      }
+    }
   }
 `
 
-const IndexPage = ({ data }) => (
-  <>
-    <SEO title="Home" />
-    <Jumbo description={data.allSite.edges[0].node.siteMetadata.description} />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <Link to="/page-2/">Go to page 2</Link>
-    <br />
-    <Link to="/gracias">Go to Gracias</Link>
-  </>
-)
+// const Button = styled.button`
+//   width: 80px;
+//   background-color: #98ca3f;
+//   border: none;
+//   border-radius: 10px;
+//   cursor: pointer;
+//   padding: 5px;
+//   color: ${props => props.color};
+//   &:hover {
+//     transform: scale(1.4);
+//   }
+// `
+
+const IndexPage = ({ data }) => {
+  console.log(data)
+  return (
+    <>
+      <SEO title="Home" />
+      <Jumbo
+        description={data.allSite.edges[0].node.siteMetadata.description}
+      />
+      <Product products={data.allStripeSku.edges} />
+    </>
+  )
+}
 
 export default IndexPage
