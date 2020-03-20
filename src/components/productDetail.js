@@ -1,5 +1,6 @@
-import React from "react"
+import React, { useContext, useState } from "react"
 import priceFormat from "../utils/priceFormat"
+import { CartContext } from "../context"
 import {
   Tag,
   SizeButton,
@@ -10,70 +11,50 @@ import {
 } from "../styles/components"
 import { SEO, Starts } from "./"
 
-class productDetail extends React.Component {
-  constructor({ sku, price, product: { name, metadata } }) {
-    super()
-    this.id = sku
-    this.price = price
-    this.name = name
-    this.metadata = metadata
-    this.wear = metadata.wear
-    this.state = {
-      size: 2,
-      qty: 1,
-    }
-    this.formatePrice = priceFormat(price)
-  }
+const ProductDetail = ({ id, price, product: { name, metadata } }) => {
+  const formatePrice = priceFormat(price)
+  const [size, setSize] = useState(2)
+  const [qty, setQty] = useState(1)
+  const { addToCart } = useContext(CartContext)
 
-  render() {
-    return (
-      <StyledProductDetail>
-        <SEO title={this.name} />
-        <img src={this.metadata.img} alt={this.name} />
-        <div>
-          <Tag>Popular</Tag>
-          <h2>{this.name}</h2>
-          <b>USD {this.formatePrice}</b>
-          <Starts />
-          {this.wear && <h3>Color: Azul</h3>}
-          <small>{this.metadata.description}</small>
-          {this.metadata.wear && (
-            <SizeSelect selected={this.state.size}>
-              <SizeButton onClick={() => this.setState({ size: 1 })}>
-                XS
-              </SizeButton>
-              <SizeButton onClick={() => this.setState({ size: 2 })}>
-                S
-              </SizeButton>
-              <SizeButton onClick={() => this.setState({ size: 3 })}>
-                M
-              </SizeButton>
-              <SizeButton onClick={() => this.setState({ size: 4 })}>
-                L
-              </SizeButton>
-            </SizeSelect>
-          )}
-          <p>Cantidad:</p>
-          <QtySelect>
-            <button
-              onClick={() =>
-                this.state.qty > 1
-                  ? this.setState({ qty: this.state.qty - 1 })
-                  : null
-              }
-            >
-              -
-            </button>
-            <input type="text" disabled value={this.state.qty}></input>
-            <button onClick={() => this.setState({ qty: this.state.qty + 1 })}>
-              +
-            </button>
-          </QtySelect>
-          <Button>Agregar al carrito</Button>
-        </div>
-      </StyledProductDetail>
-    )
+  const handleSubmit = () => {
+    addToCart({
+      price,
+      sku: id,
+      name,
+      metadata,
+      quantity: qty,
+    })
   }
+  return (
+    <StyledProductDetail>
+      <SEO title={name} />
+      <img src={metadata.img} alt={name} />
+      <div>
+        <Tag>Popular</Tag>
+        <h2>{name}</h2>
+        <b>USD {formatePrice}</b>
+        <Starts />
+        {metadata.wear && <h3>Color: Azul</h3>}
+        <small>{metadata.description}</small>
+        {metadata.wear && (
+          <SizeSelect selected={size}>
+            <SizeButton onClick={() => setSize(1)}>XS</SizeButton>
+            <SizeButton onClick={() => setSize(2)}>S</SizeButton>
+            <SizeButton onClick={() => setSize(3)}>M</SizeButton>
+            <SizeButton onClick={() => setSize(4)}>L</SizeButton>
+          </SizeSelect>
+        )}
+        <p>Cantidad:</p>
+        <QtySelect>
+          <button onClick={() => (qty > 1 ? setQty(qty - 1) : null)}>-</button>
+          <input type="text" disabled value={qty}></input>
+          <button onClick={() => setQty(qty + 1)}>+</button>
+        </QtySelect>
+        <Button onClick={handleSubmit}>Agregar al carrito</Button>
+      </div>
+    </StyledProductDetail>
+  )
 }
 
-export default productDetail
+export default ProductDetail
