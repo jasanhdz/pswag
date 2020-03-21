@@ -13,8 +13,8 @@ export default function Cart() {
 
     const { error } = await stripe.redirectToCheckout({
       items: cart.map(({ sku, quantity }) => ({ sku, quantity })),
-      successUrl: "http://localhost:8000/gracias",
-      cancelUrl: "http://localhost:8000/",
+      successUrl: "https://pswag.now.sh/gracias",
+      cancelUrl: "https://pswag.now.sh/",
     })
 
     if (error) {
